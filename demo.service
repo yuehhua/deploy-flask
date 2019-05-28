@@ -1,0 +1,14 @@
+[Unit]
+Description=***'s Django server by uWSGI
+After=syslog.target
+
+[Service]
+ExecStart=/path/to/VENV/bin/uwsgi --ini /etc/uwsgi/vassals/PROJ.ini
+Restart=always
+KillSignal=SIGQUIT
+Type=notify
+StandardError=syslog
+NotifyAccess=all
+
+[Install]
+WantedBy=multi-user.target

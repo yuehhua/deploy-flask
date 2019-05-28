@@ -62,15 +62,25 @@ goodbye to uWSGI.
 VACUUM: unix socket /tmp/demo.sock removed.
 ```
 
-## STEP 3: set web server with nginx
+## STEP 3: setup service with systemd for your project
+
+* Place `uwsgi.ini` to `/etc/uwsgi/vassals/uwsgi.ini`
+* Create and configure service `/etc/systemd/system/demo.service`
+* Start service with `sudo systemctl start demo.service`, and it would run `uwsgi --ini uwsgi.ini` as a service for you
+
+* Check service status with `sudo systemctl status demo.service`
+* Stop service with `sudo systemctl stop demo.service`
+
+## STEP 4: set web server with nginx
 
 * Update repo with `sudo apt update`
 * Install nginx in your OS: `sudo apt install nginx`
 * Configure with `demo.conf`
     * Change `server_name` to YOUR-IP or 127.0.0.1
-* Create configure file link to nginx: `sudo ln -s /your/path/to/demo/demo.conf /etc/nginx/conf.d/demo.conf`
+* Create configure file link to nginx: `sudo ln -s /your/path/to/demo/demo.conf /etc/nginx/sites-available/demo.conf`
+    * In Ubuntu, place conf in `/etc/nginx/sites-available/` and link to `/etc/nginx/sites-enabled/`
+    * In CentOS, place conf in `/etc/nginx/conf.d/`
 * Start nginx service with `sudo systemctl start nginx.service`
-* Start uwsgi with `uwsgi --ini uwsgi.ini`
 * Test http://YOUR-IP/ on browser
 
 You will see some log in `demo.log`:

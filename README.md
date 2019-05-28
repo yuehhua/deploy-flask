@@ -133,6 +133,24 @@ VACUUM: unix socket /tmp/demo.sock removed.
 * Stop service with `sudo systemctl stop nginx.service`
 * Reload config without stoping a service with `sudo systemctl reload nginx.service`
 
+## STEP 5: serve static files with nginx
+
+* Create the directory for your static files, usually we place under `/var/www/demo`
+* Place your static files under `/var/www/demo`
+* Configure `demo.conf` with `root` for directing the static files directory and `index` for your home pages.
+* [try_files docs](https://docs.nginx.com/nginx/admin-guide/web-server/serving-static-content/#trying-several-options)
+
+```
+server {
+  listen 80 default_server;
+  root /var/www/demo;
+  index index.html;
+  location / {
+    try_files $uri $uri/ =404;
+  }
+}
+```
+
 ## Further reading
 
 [使用 uWSGI、nginx、systemd 部署 Django](https://blog.liang2.tw/posts/2016/05/django-deploy-uwsgi-nginx-systemd/)

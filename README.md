@@ -139,14 +139,22 @@ VACUUM: unix socket /tmp/demo.sock removed.
 * Place your static files under `/var/www/demo`
 * Configure `demo.conf` with `root` for directing the static files directory and `index` for your home pages.
 * [try_files docs](https://docs.nginx.com/nginx/admin-guide/web-server/serving-static-content/#trying-several-options)
+* Setup privileges of static files and folders with owner **www-data** and mode **755**
 
 ```
 server {
-  listen 80 default_server;
+  listen 80;
+  server_name 127.0.0.1;
+  
   root /var/www/demo;
   index index.html;
+
   location / {
     try_files $uri $uri/ =404;
+  }
+
+  location /static/ {
+    alias /var/www/demo/static/;
   }
 }
 ```
